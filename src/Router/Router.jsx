@@ -7,6 +7,9 @@ import Home from "../Pages/Home/Home";
 import Products from "../Pages/Products/Products";
 import Contact from "../Pages/Contact/Contact";
 import AddProduct from "../Pages/Add Products/Add_Product";
+import Authentication_Dashboard from "../Pages/Authentication/Authentication_Dashboard";
+import Login from "../Pages/Authentication/Login/Login";
+import Signup from "../Pages/Authentication/SignUp/Signup";
 
 export  const router = createBrowserRouter([
   {
@@ -30,7 +33,24 @@ export  const router = createBrowserRouter([
         element:<AddProduct></AddProduct>
       }
     ]
-  },
+  },{
+    path:'/auth',
+    Component: Authentication_Dashboard,
+    children:[
+      {
+        index: true ,
+        element : <Authentication_Dashboard></Authentication_Dashboard>
+      },
+      {
+        path: '/auth/login',
+        element: <Login></Login>
+      },
+      {
+        path: '/auth/signup',
+        element: <Signup></Signup>
+      }
+    ]
+  }
 ]);
 
 
