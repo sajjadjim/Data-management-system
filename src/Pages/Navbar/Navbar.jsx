@@ -62,7 +62,7 @@ const Navbar = () => {
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-blue-700 rounded-lg shadow-lg py-2">
                     <Link
-                      to="/dashboard"
+                      to="/dashboard/products"
                       className="block px-4 py-2 text-white hover:bg-blue-600"
                       onClick={() => setDropdownOpen(false)}
                     >

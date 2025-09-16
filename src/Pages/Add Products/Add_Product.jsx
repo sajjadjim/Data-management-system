@@ -169,7 +169,7 @@ const AddProduct = () => {
           <div className="col-span-2">
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold shadow-lg hover:opacity-90 transition-all"
+              className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold shadow-lg hover:opacity-90 transition-all"
             >
               Add Product
             </button>
