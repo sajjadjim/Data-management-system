@@ -14,7 +14,6 @@ import ProductsDashboard from "../Layouts/Dashboard/Products";
 import Accounts from "../Layouts/Dashboard/Accounts Part/Accounts";
 import PaymentHistory from "../Layouts/Dashboard/History/Payment History/Payments_History";
 import ProductHistory from "../Layouts/Dashboard/History/Products sell/ProductsHistory";
-
 export  const router = createBrowserRouter([
   {
     path: "/",
