@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'; // Icons
 import useAxiosInstance from '../../Hook/useAxiosInstance'; // Custom axios hook
 import { toast } from 'react-toastify';
 import { useQuery } from '@tanstack/react-query';
 
 const ProductsDashboard = () => {
+
+    useEffect(()=>{
+      document.title = "Dashboard - Products";
+    })
+
   const useAxios = useAxiosInstance();
 
   // State for modal, pagination, product quantity inputs

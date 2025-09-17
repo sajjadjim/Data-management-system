@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai"; // Search icon
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa"; // Social Media Icons
 import { toast } from "react-toastify"; // For success/error messages
 
 const Contact = () => {
+    useEffect(()=>{
+      document.title = "Products - Contact";
+    })
   const [formData, setFormData] = useState({
     name: "",
     email: "",

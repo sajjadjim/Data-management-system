@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import BuyProducts from './Buy Products/BuyProducts';
 
 export default function Accounts() {
+      useEffect(()=>{
+        document.title = "Dashboard - Accounts";
+      })
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">Accounts</h1>

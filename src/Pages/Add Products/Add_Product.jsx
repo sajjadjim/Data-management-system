@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaImage, FaDollarSign, FaBarcode, FaWeightHanging, FaCalendarAlt } from "react-icons/fa"; // Importing FontAwesome Icons
 import axios from "axios"; // For making API calls
 import { toast, ToastContainer } from "react-toastify"; // For showing success or error messages
 
 const AddProduct = () => {
+
+    useEffect(()=>{
+      document.title = "Products - Add Product";
+    })
+
   const [formData, setFormData] = useState({
     name: "",
     code: "",

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "../../Hook/useAxiosInstance";
 import { AiOutlineSearch } from "react-icons/ai"; // Search icon
 import Skeleton from "react-loading-skeleton"; // Corrected import for Skeleton
 import { ClipLoader } from "react-spinners"; // Loading spinner import
+import { motion } from "framer-motion"; // React Motion Library
 
 const Products = () => {
+  useEffect(() => {
+    document.title = "Products - Inventory Management System";
+  });
+
   const useAxios = useAxiosInstance();
 
   // Pagination and Search State
@@ -86,7 +91,13 @@ const Products = () => {
         ) : (
           // Actual products displayed after data is fetched
           currentProducts.map((product) => (
-            <div key={product._id} className="bg-white rounded-lg shadow-lg p-4">
+            <motion.div
+              key={product._id}
+              className="bg-white rounded-lg shadow-lg p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
               <img
                 src={product.image}
                 alt={product.name}
@@ -108,7 +119,7 @@ const Products = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))
         )}
       </div>
@@ -130,7 +141,12 @@ const Products = () => {
 
       {/* Modal for Product Details */}
       {selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <motion.div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="bg-white rounded-lg shadow-lg w-96 p-6">
             <h2 className="text-2xl font-bold text-blue-600 mb-4">Product Details</h2>
             <img
@@ -153,7 +169,7 @@ const Products = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
