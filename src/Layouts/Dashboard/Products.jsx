@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'; // Icons
 import useAxiosInstance from '../../Hook/useAxiosInstance'; // Custom axios hook
 import { toast } from 'react-toastify';
 import { useQuery } from '@tanstack/react-query';
+import { useSpring, animated } from '@react-spring/web'; // Import for React Spring animations
 
 const ProductsDashboard = () => {
-
-    useEffect(()=>{
-      document.title = "Dashboard - Products";
-    })
+  useEffect(() => {
+    document.title = "Dashboard - Products";
+  });
 
   const useAxios = useAxiosInstance();
 
@@ -120,6 +120,9 @@ const ProductsDashboard = () => {
   // Handle page change
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Animations for table rows using React Spring
+  const fadeIn = useSpring({ opacity: 1, from: { opacity: 0 }, config: { duration: 500 } });
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">Products Dashboard</h1>
@@ -127,9 +130,7 @@ const ProductsDashboard = () => {
       {/* Loading Spinner */}
       {isLoading && (
         <div className="flex justify-center items-center">
-          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-current border-t-transparent rounded-full" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
+          <div className="animate-spin border-t-4 border-blue-500 w-16 h-16 rounded-full"></div>
         </div>
       )}
 
@@ -148,7 +149,11 @@ const ProductsDashboard = () => {
             </thead>
             <tbody>
               {currentProducts?.map((product) => (
-                <tr key={product._id} className="hover:bg-gray-100">
+                <animated.tr
+                  key={product._id}
+                  className="hover:bg-gray-100"
+                  style={fadeIn} // Apply fade-in animation to rows
+                >
                   <td className="px-4 py-2 border">{product.name}</td>
                   <td className="px-4 py-2 border">{product.code}</td>
                   <td className="px-4 py-2 border">{product.price} Taka</td>
@@ -173,7 +178,7 @@ const ProductsDashboard = () => {
                       <AiOutlineMinus size={20} />
                     </button>
                     <button
-                      className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition mr-2"
+                      className="bg-yellow-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition mr-2"
                       onClick={() => {
                         setSelectedProduct(product);
                         setShowEditModal(true); // Open the Product Detail Modal
@@ -182,7 +187,7 @@ const ProductsDashboard = () => {
                       <AiOutlineEdit size={20} />
                     </button>
                     <button
-                      className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-500 transition"
+                      className="bg-red-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-red-500 transition"
                       onClick={() => {
                         setSelectedProduct(product);
                         setShowDeleteConfirmModal(true); // Open the delete confirmation modal
@@ -191,7 +196,7 @@ const ProductsDashboard = () => {
                       <AiOutlineDelete size={20} />
                     </button>
                   </td>
-                </tr>
+                </animated.tr>
               ))}
             </tbody>
           </table>
@@ -204,7 +209,7 @@ const ProductsDashboard = () => {
           {Array.from({ length: totalPages }).map((_, index) => (
             <li
               key={index}
-              className={`cursor-pointer px-4 py-2 rounded-lg text-lg ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+              className={`cursor-pointer px-6 py-3 rounded-lg text-lg ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
               onClick={() => paginate(index + 1)}
             >
               {index + 1}
@@ -212,6 +217,30 @@ const ProductsDashboard = () => {
           ))}
         </ul>
       </div>
+
+      {/* Product Deletion Confirmation Modal */}
+      {showDeleteConfirmModal && (
+        <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Are you sure?</h2>
+            <p className="mb-4">Do you really want to delete this product?</p>
+            <div className="flex justify-between">
+              <button
+                className="bg-red-600 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-red-500 transition"
+                onClick={handleDeleteProduct}
+              >
+                Yes, Delete
+              </button>
+              <button
+                className="bg-gray-600 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition"
+                onClick={() => setShowDeleteConfirmModal(false)}
+              >
+                No, Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modals for Product Actions */}
       {/* Your modals for Add, Relies, Edit, and Delete will go here */}

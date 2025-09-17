@@ -97,7 +97,7 @@ const Setting = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-300 ease-in-out"
+            className="w-full p-4 text-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-300 ease-in-out"
           />
         </div>
 
@@ -107,21 +107,21 @@ const Setting = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-300 ease-in-out"
+            className="w-full text-white p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-300 ease-in-out"
             disabled
           />
         </div>
 
-        <div>
+        {/* <div>
           <label className="block text-white text-lg font-semibold">Profile Picture URL</label>
           <input
             type="url"
             value={profilePic}
             onChange={(e) => setProfilePic(e.target.value)}
-            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-300 ease-in-out"
+            className="w-full p-4 text-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-300 ease-in-out"
             placeholder="Paste a URL for your profile picture"
           />
-        </div>
+        </div> */}
 
         <div className="flex justify-center space-x-6 mt-8">
           <button

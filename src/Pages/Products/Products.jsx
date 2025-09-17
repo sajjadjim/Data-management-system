@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "../../Hook/useAxiosInstance";
 import { AiOutlineSearch } from "react-icons/ai"; // Search icon
@@ -19,13 +19,15 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const productsPerPage = 9;
 
-  // Fetch products using React Query
+  // Fetch products using React Query, with cache persistence for pagination
   const { data: AllProducts = [], isLoading, isSuccess, isFetching } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", currentPage], // Add currentPage to the queryKey for cache persistence
     queryFn: async () => {
       const res = await useAxios.get("/products");
       return res.data || [];
     },
+    keepPreviousData: true, // Prevent re-fetch when the page changes
+    refetchOnWindowFocus: false, // Prevent refetch on tab switch
   });
 
   // Filter products by search term (name or code)
@@ -61,7 +63,7 @@ const Products = () => {
       </p>
 
       {/* Search bar */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center  mb-6">
         <div className="relative w-full max-w-md">
           <input
             type="text"
@@ -96,7 +98,7 @@ const Products = () => {
               className="bg-white rounded-lg shadow-lg p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+            transition={{ duration: 1 }}
             >
               <img
                 src={product.image}
