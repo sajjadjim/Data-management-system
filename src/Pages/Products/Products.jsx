@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosInstance from '../../Hook/useAxiosInstance';
-import { AiOutlineSearch } from 'react-icons/ai'; // Search icon
-import Skeleton from 'react-loading-skeleton';  // Corrected import for Skeleton
- // Skeleton loader library
+import useAxiosInstance from "../../Hook/useAxiosInstance";
+import { AiOutlineSearch } from "react-icons/ai"; // Search icon
+import Skeleton from "react-loading-skeleton"; // Corrected import for Skeleton
 
 const Products = () => {
   const useAxios = useAxiosInstance();
@@ -25,8 +24,9 @@ const Products = () => {
 
   // Filter products by search term (name or code)
   const filteredProducts = AllProducts.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.code.toLowerCase().includes(searchTerm.toLowerCase())
+    // Check if product.name and product.code are defined before using toLowerCase
+    (product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.code?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Paginate filtered products

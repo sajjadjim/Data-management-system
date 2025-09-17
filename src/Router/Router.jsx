@@ -11,6 +11,7 @@ import Authentication_Dashboard from "../Pages/Authentication/Authentication_Das
 import Login from "../Pages/Authentication/Login/Login";
 import Signup from "../Pages/Authentication/SignUp/Signup";
 import ProductsDashboard from "../Layouts/Dashboard/Products";
+import Accounts from "../Layouts/Dashboard/Accounts Part/Accounts";
 
 export  const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export  const router = createBrowserRouter([
       {
         path:'/dashboard/products',
         element:<ProductsDashboard></ProductsDashboard>
+      },
+      {
+        path:'/dashboard/accounts',
+        element: <Accounts></Accounts>
       }
     ]
   },{

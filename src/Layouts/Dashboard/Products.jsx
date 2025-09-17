@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const ProductsDashboard = () => {
   const useAxios = useAxiosInstance();
 
-  // State for modal, pagination, and product quantity inputs
+  // State for modal, pagination, product quantity inputs
   const [showAddModal, setShowAddModal] = useState(false);
   const [showReliesModal, setShowReliesModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -15,10 +15,11 @@ const ProductsDashboard = () => {
   const [reliesAmount, setReliesAmount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10; // Show 10 products per page
+  const [refreshKey, setRefreshKey] = useState(0); // Key to trigger re-fetch
 
-  // Fetch all products using React Query
+  // Fetch all products using React Query with refetch triggered by refreshKey
   const { data: products, isLoading, refetch } = useQuery({
-    queryKey: ['products'],
+    queryKey: ['products', refreshKey], // Add refreshKey to queryKey for re-fetch
     queryFn: async () => {
       const res = await useAxios.get('/products');
       return res.data || [];
@@ -47,8 +48,8 @@ const ProductsDashboard = () => {
           : product
       );
 
-      // Update the state for immediate UI feedback
-      refetch(); // Trigger a manual refetch after the stock update
+      // Trigger a manual refetch by changing the refreshKey
+      setRefreshKey((prevKey) => prevKey + 1);
 
       const response = await useAxios.patch(`/products/${selectedProduct._id}/stock`, {
         quantityChange: addAmount,
@@ -78,8 +79,8 @@ const ProductsDashboard = () => {
           : product
       );
 
-      // Update the state for immediate UI feedback
-      refetch(); // Trigger a manual refetch after the stock update
+      // Trigger a manual refetch by changing the refreshKey
+      setRefreshKey((prevKey) => prevKey + 1);
 
       const response = await useAxios.patch(`/products/${selectedProduct._id}/stock`, {
         quantityChange: -reliesAmount,
