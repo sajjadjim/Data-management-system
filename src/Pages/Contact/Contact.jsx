@@ -1,7 +1,33 @@
+import React, { useState } from "react";
+import { AiOutlineSearch } from "react-icons/ai"; // Search icon
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa"; // Social Media Icons
+import { toast } from "react-toastify"; // For success/error messages
+
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add form validation or submission logic here (e.g., API call)
+    toast.success("Your message has been sent successfully!");
+    setFormData({ name: "", email: "", message: "" }); // Reset the form after submission
+  };
+
   return (
-    <section className="bg-gradient-to-r from-gray-200 to-gray-400 min-h-screen py-16 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section className="min-h-screen py-16 px-6">
+      <div className="max-w-6xl mx-auto">
         {/* Heading */}
         <div className="text-center mb-16">
           <h2 className="text-5xl font-extrabold text-blue-700 mb-6">Contact Us</h2>
@@ -13,16 +39,20 @@ const Contact = () => {
         {/* Content grid */}
         <div className="grid md:grid-cols-2 gap-14">
           {/* Contact Form */}
-          <div className="bg-white p-10 rounded-3xl shadow-2xl transition-all hover:scale-105 hover:shadow-2xl">
+          <div className="bg-white p-12 rounded-3xl shadow-2xl transition-all hover:scale-105 hover:shadow-2xl">
             <h3 className="text-3xl font-semibold text-gray-800 mb-8">Send Us a Message</h3>
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Your Name</label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="Enter your name"
                   className="w-full border border-gray-300 rounded-lg px-5 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg transition-all"
+                  required
                 />
               </div>
 
@@ -31,8 +61,12 @@ const Contact = () => {
                 <label className="block text-gray-700 font-medium mb-2">Email Address</label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter your email"
                   className="w-full border border-gray-300 rounded-lg px-5 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg transition-all"
+                  required
                 />
               </div>
 
@@ -40,9 +74,13 @@ const Contact = () => {
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Your Message</label>
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   rows="6"
                   placeholder="Write your message here..."
                   className="w-full border border-gray-300 rounded-lg px-5 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg transition-all"
+                  required
                 ></textarea>
               </div>
 
@@ -57,7 +95,7 @@ const Contact = () => {
           </div>
 
           {/* Contact Info */}
-          <div className="bg-blue-600 text-white p-10 rounded-3xl shadow-xl flex flex-col justify-center">
+          <div className="bg-blue-600 text-white p-12 rounded-3xl shadow-xl flex flex-col justify-center">
             <h3 className="text-3xl font-semibold mb-6">Contact Information</h3>
             <p className="mb-6 text-lg font-light">
               Got questions or need support? Reach out to us anytime—we're here to help!
@@ -80,16 +118,16 @@ const Contact = () => {
             {/* Social Media Links */}
             <div className="mt-6 flex space-x-6">
               <a href="#" className="text-white text-2xl hover:text-gray-300">
-                <i className="fab fa-facebook-f"></i>
+                <FaFacebookF />
               </a>
               <a href="#" className="text-white text-2xl hover:text-gray-300">
-                <i className="fab fa-twitter"></i>
+                <FaTwitter />
               </a>
               <a href="#" className="text-white text-2xl hover:text-gray-300">
-                <i className="fab fa-linkedin-in"></i>
+                <FaLinkedinIn />
               </a>
               <a href="#" className="text-white text-2xl hover:text-gray-300">
-                <i className="fab fa-instagram"></i>
+                <FaInstagram />
               </a>
             </div>
           </div>

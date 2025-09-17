@@ -12,6 +12,8 @@ import Login from "../Pages/Authentication/Login/Login";
 import Signup from "../Pages/Authentication/SignUp/Signup";
 import ProductsDashboard from "../Layouts/Dashboard/Products";
 import Accounts from "../Layouts/Dashboard/Accounts Part/Accounts";
+import PaymentHistory from "../Layouts/Dashboard/History/Payment History/Payments_History";
+import ProductHistory from "../Layouts/Dashboard/History/Products sell/ProductsHistory";
 
 export  const router = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ export  const router = createBrowserRouter([
       {
         path:'/dashboard/accounts',
         element: <Accounts></Accounts>
+      },
+      {
+        path:'/product-history',
+        element: <ProductHistory/>
+      },
+      {
+        path: '/payment-history',
+        element: <PaymentHistory/>
       }
     ]
   },{

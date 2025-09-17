@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, User, LogOut, Settings, Home } from "lucide-react"; // icons from lucide-react
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Menu, X, User, LogOut, Settings, Home, ShoppingCart } from "lucide-react"; // icons from lucide-react
 import { toast } from "react-toastify"; // For toast notifications
 import useAuth from "../../Hook/useAuth";
 import AuthProvider from "../../Auth/Authprovider";
@@ -8,9 +8,9 @@ import AuthProvider from "../../Auth/Authprovider";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // for managing the dropdown
-  const { logOut , user } = useAuth()
+  const { logOut, user } = useAuth();
   const navigate = useNavigate();
-
+  const location = useLocation(); // to track the current active route
 
   const handleLogOut = () => {
     logOut()
@@ -25,6 +25,10 @@ const Navbar = () => {
       });
   };
 
+  const isActive = (path) => {
+    return location.pathname === path ? "text-yellow-300" : "text-white"; // highlight active link
+  };
+
   return (
     <nav className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,17 +39,26 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex space-x-6 font-medium">
-            <Link to="/" className="hover:text-yellow-300 transition">
+          <div className="hidden md:flex justify-center items-center justify-items-center space-x-6 font-medium">
+            <Link to="/" className={`hover:text-yellow-300 transition ${isActive("/")}`}>
+              <Home size={20} className="inline mr-2" />
               Home
             </Link>
-            <Link to="/products" className="hover:text-yellow-300 transition">
+            <Link to="/products" className={`hover:text-yellow-300 transition ${isActive("/products")}`}>
+              <ShoppingCart size={20} className="inline mr-2" />
               Products
             </Link>
-            <Link to="/add-product" className="hover:text-yellow-300 transition">
-              Add Product
-            </Link>
-            <Link to="/contact" className="hover:text-yellow-300 transition">
+
+            {/* Conditional "Add Product" Link */}
+            {user && (
+              <Link to="/add-product" className={`hover:text-yellow-300 transition ${isActive("/add-product")}`}>
+                <Settings size={20} className="inline mr-2" />
+                Add Product
+              </Link>
+            )}
+
+            <Link to="/contact" className={`hover:text-yellow-300 transition ${isActive("/contact")}`}>
+              <User size={20} className="inline mr-2" />
               Contact
             </Link>
 
@@ -57,7 +70,6 @@ const Navbar = () => {
                   className="flex items-center space-x-2 p-2 hover:text-yellow-300 transition"
                 >
                   <User size={24} />
-                  <span>{user.displayName || "User"}</span>
                 </button>
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-blue-700 rounded-lg shadow-lg py-2">
@@ -69,12 +81,12 @@ const Navbar = () => {
                       <Home size={16} className="inline mr-2" />
                       Accounts
                     </Link>
-                     <Link
+                    <Link
                       to="/dashboard/products"
                       className="block px-4 py-2 text-white hover:bg-blue-600"
                       onClick={() => setDropdownOpen(false)}
                     >
-                      <Home size={16} className="inline mr-2" />
+                      <ShoppingCart size={16} className="inline mr-2" />
                       Dashboard
                     </Link>
                     <Link
@@ -122,30 +134,39 @@ const Navbar = () => {
         <div className="md:hidden bg-blue-700 px-4 pb-4 space-y-2">
           <Link
             to="/"
-            className="block py-2 hover:text-yellow-300 transition"
+            className={`block py-2 hover:text-yellow-300 transition ${isActive("/")}`}
             onClick={() => setIsOpen(false)}
           >
+            <Home size={20} className="inline mr-2" />
             Home
           </Link>
           <Link
             to="/products"
-            className="block py-2 hover:text-yellow-300 transition"
+            className={`block py-2 hover:text-yellow-300 transition ${isActive("/products")}`}
             onClick={() => setIsOpen(false)}
           >
+            <ShoppingCart size={20} className="inline mr-2" />
             Products
           </Link>
-          <Link
-            to="/add-product"
-            className="block py-2 hover:text-yellow-300 transition"
-            onClick={() => setIsOpen(false)}
-          >
-            Add Product
-          </Link>
+
+          {/* Conditional Mobile "Add Product" Link */}
+          {user && (
+            <Link
+              to="/add-product"
+              className={`block py-2 hover:text-yellow-300 transition ${isActive("/add-product")}`}
+              onClick={() => setIsOpen(false)}
+            >
+              <Settings size={20} className="inline mr-2" />
+              Add Product
+            </Link>
+          )}
+
           <Link
             to="/contact"
-            className="block py-2 hover:text-yellow-300 transition"
+            className={`block py-2 hover:text-yellow-300 transition ${isActive("/contact")}`}
             onClick={() => setIsOpen(false)}
           >
+            <User size={20} className="inline mr-2" />
             Contact
           </Link>
 

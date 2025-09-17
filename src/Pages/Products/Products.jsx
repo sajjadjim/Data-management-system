@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "../../Hook/useAxiosInstance";
 import { AiOutlineSearch } from "react-icons/ai"; // Search icon
 import Skeleton from "react-loading-skeleton"; // Corrected import for Skeleton
+import { ClipLoader } from "react-spinners"; // Loading spinner import
 
 const Products = () => {
   const useAxios = useAxiosInstance();
@@ -14,7 +15,7 @@ const Products = () => {
   const productsPerPage = 9;
 
   // Fetch products using React Query
-  const { data: AllProducts = [], isLoading, isSuccess } = useQuery({
+  const { data: AllProducts = [], isLoading, isSuccess, isFetching } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await useAxios.get("/products");
@@ -24,7 +25,6 @@ const Products = () => {
 
   // Filter products by search term (name or code)
   const filteredProducts = AllProducts.filter((product) =>
-    // Check if product.name and product.code are defined before using toLowerCase
     (product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.code?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -71,15 +71,20 @@ const Products = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {isLoading ? (
-          // Skeleton Loader when data is loading
+        {isFetching ? (
+          // Show loading spinner while fetching data
+          <div className="flex justify-center items-center w-full h-64">
+            <ClipLoader size={50} color={"#007bff"} loading={true} />
+          </div>
+        ) : isLoading || !isSuccess ? (
+          // Show skeleton loaders when data is loading
           <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex justify-center space-x-4">
             <Skeleton width={250} height={300} />
             <Skeleton width={250} height={300} />
             <Skeleton width={250} height={300} />
           </div>
         ) : (
-          // Actual products displayed
+          // Actual products displayed after data is fetched
           currentProducts.map((product) => (
             <div key={product._id} className="bg-white rounded-lg shadow-lg p-4">
               <img
@@ -92,7 +97,7 @@ const Products = () => {
                 <p className="text-gray-600">{product.code}</p>
                 <p className="text-lg font-semibold text-blue-500 mt-2">{product.price} Taka</p>
                 <p className="text-gray-500 mt-2">{product.description}</p>
-                <p className="text-sm text-gray-500 mt-2">Category: <span className='font-bold'>{product.category}</span></p>
+                <p className="text-sm text-gray-500 mt-2">Category: <span className="font-bold">{product.category}</span></p>
                 <p className="text-sm text-gray-500 mt-2">Quantity Available: {product.quantity}</p>
                 <div className="mt-4 flex justify-center space-x-4">
                   <button

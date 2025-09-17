@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: `http://localhost:3000`
+    baseURL: `https://electronics-database-three.vercel.app`
 })
 
 const useAxiosInstance = () => {
@@ -9,3 +9,6 @@ const useAxiosInstance = () => {
 };
 
 export default useAxiosInstance;
+
+// https://electronics-database-three.vercel.app
+// https://electronics-database-three.vercel.app

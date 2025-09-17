@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaImage, FaDollarSign, FaBarcode, FaWeightHanging, FaCalendarAlt } from "react-icons/fa"; // Importing FontAwesome Icons
 import axios from "axios"; // For making API calls
-import { toast } from "react-toastify"; // For showing success or error messages
+import { toast, ToastContainer } from "react-toastify"; // For showing success or error messages
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -79,9 +79,9 @@ const AddProduct = () => {
 
     try {
       // Send the product data to the backend for storage
-      const response = await axios.post("http://localhost:3000/products", productData);
+      const response = await axios.post("https://electronics-database-three.vercel.app/products", productData);
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         // Show success message (toast)
         toast.success("Product added successfully!");
 
@@ -100,10 +100,10 @@ const AddProduct = () => {
           description: "",
         });
 
-        // Automatically hide the toast after 2 seconds
+        // Automatically dismiss the toast after 2 seconds
         setTimeout(() => {
           toast.dismiss(); // Dismiss the toast after 2 seconds
-        }, 2000);
+        }, 1000);
       } else {
         toast.error("Error adding product!"); // Show error message if adding product fails
       }
@@ -114,7 +114,8 @@ const AddProduct = () => {
   };
 
   return (
-    <section className="bg-gradient-to-r from-blue-100 to-blue-100 min-h-screen py-16 px-6">
+    <section className="min-h-screen py-16 px-6">
+       <ToastContainer/>
       <div className="max-w-6xl mx-auto bg-white p-12 rounded-xl shadow-2xl">
         <h2 className="text-5xl font-extrabold text-center text-blue-700 mb-8">
           Add New Product

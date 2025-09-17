@@ -93,46 +93,48 @@ const BuyProductModal = ({ product, closeModal, refetch }) => {
 
   return (
     <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg w-96 p-6">
-        <h2 className="text-2xl font-bold text-blue-600 mb-4">Buy Product</h2>
+      <div className="bg-white rounded-xl shadow-2xl w-full sm:w-96 p-6 transform transition duration-500 ease-in-out">
+        <h2 className="text-2xl font-extrabold text-indigo-600 mb-6 text-center">Buy Product</h2>
         
-        {/* Buyer Information */}
-        <input
-          type="text"
-          value={buyerName}
-          onChange={(e) => setBuyerName(e.target.value)}
-          placeholder="Buyer Name"
-          className="w-full p-3 border rounded-lg mb-4"
-        />
-        <input
-          type="email"
-          value={buyerEmail}
-          onChange={(e) => setBuyerEmail(e.target.value)}
-          placeholder="Buyer Email"
-          className="w-full p-3 border rounded-lg mb-4"
-        />
-        
+        {/* Buyer Information (2-column layout on larger screens) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input
+            type="text"
+            value={buyerName}
+            onChange={(e) => setBuyerName(e.target.value)}
+            placeholder="Buyer Name"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          />
+          <input
+            type="email"
+            value={buyerEmail}
+            onChange={(e) => setBuyerEmail(e.target.value)}
+            placeholder="Buyer Email"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          />
+        </div>
+
         {/* Product Quantity Selection */}
         <div className="mb-4">
-          <label className="block text-gray-700">Quantity</label>
+          <label className="block text-gray-700 text-lg mb-2">Quantity</label>
           <input
             type="number"
             value={quantityToBuy}
             min="1"
             max={product?.quantity || 0} // Prevent buying more than the available stock
             onChange={(e) => setQuantityToBuy(Math.min(e.target.value, product?.quantity))}
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
           />
-          <span className="text-gray-500">Available stock: {product?.quantity || 0}</span>
+          <span className="text-sm text-gray-500">Available stock: {product?.quantity || 0}</span>
         </div>
 
         {/* Payment Method */}
         <div className="mb-4">
-          <label className="block text-gray-700">Payment Method</label>
+          <label className="block text-gray-700 text-lg mb-2">Payment Method</label>
           <select
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
           >
             <option value="">Select Payment Method</option>
             <option value="Cash">Cash</option>
@@ -143,14 +145,14 @@ const BuyProductModal = ({ product, closeModal, refetch }) => {
 
         {/* Partial Payment */}
         <div className="mb-4">
-          <label className="block text-gray-700">Partial Payment</label>
+          <label className="block text-gray-700 text-lg mb-2">Partial Payment</label>
           <input
             type="checkbox"
             checked={isPartialPayment}
             onChange={() => setIsPartialPayment(!isPartialPayment)}
             className="mr-2"
           />
-          <span>If yes, enter the amount</span>
+          <span className="text-lg">If yes, enter the amount</span>
           {isPartialPayment && (
             <div className="mt-2">
               <input
@@ -158,7 +160,7 @@ const BuyProductModal = ({ product, closeModal, refetch }) => {
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(Number(e.target.value))}
                 placeholder={`Enter amount to pay (Max: ${totalPrice} Taka)`}
-                className="w-full p-3 border rounded-lg"
+                className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
               />
             </div>
           )}
@@ -166,33 +168,33 @@ const BuyProductModal = ({ product, closeModal, refetch }) => {
         
         {/* Display remaining balance if partial payment */}
         {isPartialPayment && paymentAmount > 0 && (
-          <div className="text-red-600 mb-4">
+          <div className="text-red-600 mb-4 text-lg">
             Remaining balance: {totalPrice - paymentAmount} Taka
           </div>
         )}
 
         {/* Receipt Generation Option */}
         <div className="mb-4">
-          <label className="block text-gray-700">Generate Receipt</label>
+          <label className="block text-gray-700 text-lg mb-2">Generate Receipt</label>
           <input
             type="checkbox"
             checked={generateReceipt}
             onChange={() => setGenerateReceipt(!generateReceipt)}
             className="mr-2"
           />
-          <span>Check this box if you want a receipt</span>
+          <span className="text-lg">Check this box if you want a receipt</span>
         </div>
 
         {/* Submit */}
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-6">
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition"
+            className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-500 transition duration-300"
             onClick={handleSubmit}
           >
             Submit
           </button>
           <button
-            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition"
+            className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-500 transition duration-300"
             onClick={closeModal}
           >
             Cancel
