@@ -15,6 +15,10 @@ import Accounts from "../Layouts/Dashboard/Accounts Part/Accounts";
 import PaymentHistory from "../Layouts/Dashboard/History/Payment History/Payments_History";
 import ProductHistory from "../Layouts/Dashboard/History/Products sell/ProductsHistory";
 import Setting from "../Pages/Setting/Setting";
+import Electronics_Products from "../Pages/Products/Electronics Products/Electronics_Products";
+import Food from "../Pages/Products/Food/Food";
+import Furniture from "../Pages/Products/Furniture/Furniture";
+import Clothing from "../Pages/Products/Clothings/Clothing";
 export  const router = createBrowserRouter([
   {
     path: "/",
@@ -55,6 +59,21 @@ export  const router = createBrowserRouter([
       {
         path: '/settings',
         element : <Setting></Setting>
+      },{
+        path: 'products/electronics',
+        element: <Electronics_Products />
+      },
+      {
+        path: 'products/food',
+        element:<Food></Food>
+      },
+      {
+        path: 'products/furniture',
+        element: <Furniture></Furniture>
+      },
+      {
+        path: 'products/clothings',
+        element: <Clothing></Clothing>
       }
     ]
   },{

@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, User, LogOut, Settings, Home, ShoppingCart } from "lucide-react"; // icons from lucide-react
+import { Menu, X, User, LogOut, Settings, Home, ShoppingCart, ChevronDown } from "lucide-react"; // Added ChevronDown for dropdown
 import { toast } from "react-toastify"; // For toast notifications
 import useAuth from "../../Hook/useAuth";
-import AuthProvider from "../../Auth/Authprovider";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // for managing the dropdown
+  const [productsDropdownOpen, setProductsDropdownOpen] = useState(false); // for managing the Products dropdown
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false); // for managing the User dropdown
   const { logOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // to track the current active route
@@ -29,6 +29,28 @@ const Navbar = () => {
     return location.pathname === path ? "text-yellow-300" : "text-white"; // highlight active link
   };
 
+  const handleProductsDropdownToggle = () => {
+    setProductsDropdownOpen(!productsDropdownOpen);
+    setUserDropdownOpen(false); // Close the User dropdown when Products dropdown is toggled
+  };
+
+  const handleUserDropdownToggle = () => {
+    setUserDropdownOpen(!userDropdownOpen);
+    setProductsDropdownOpen(false); // Close the Products dropdown when User dropdown is toggled
+  };
+
+  // Keep the products dropdown open if user is on any product route
+  useEffect(() => {
+    if (location.pathname.includes("/products")) {
+      setProductsDropdownOpen(true);
+    } else {
+      setProductsDropdownOpen(false);
+    }
+  }, [location.pathname]);
+
+  // Default User Avatar (in case the user does not have a profile picture)
+  const userAvatar = user?.photoURL || "https://www.w3schools.com/w3images/avatar2.png"; 
+
   return (
     <nav className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,10 +66,61 @@ const Navbar = () => {
               <Home size={20} className="inline mr-2" />
               Home
             </Link>
-            <Link to="/products" className={`hover:text-yellow-300 transition ${isActive("/products")}`}>
-              <ShoppingCart size={20} className="inline mr-2" />
-              Products
-            </Link>
+
+            {/* Products Dropdown with More Routes */}
+            <div
+              className="relative"
+              onMouseEnter={() => setProductsDropdownOpen(true)} // Open on hover
+              onMouseLeave={() => setProductsDropdownOpen(false)} // Close on hover leave
+            >
+              <button
+                onClick={handleProductsDropdownToggle}
+                className={`flex items-center space-x-2 p-2 hover:text-yellow-300 transition ${isActive("/products")}`}
+              >
+                <ShoppingCart size={20} className="inline mr-2" />
+                Products
+                <ChevronDown size={16} className="inline ml-2" />
+              </button>
+              {(productsDropdownOpen || location.pathname.includes("/products")) && ( // Open when clicked or hovered
+                <div className="absolute left-0 mt-2 w-48 bg-blue-700 rounded-lg shadow-lg py-2">
+                  <Link
+                    to="/products"
+                    className="block px-4 py-2 text-white hover:bg-blue-600"
+                    onClick={() => setProductsDropdownOpen(false)}
+                  >
+                    All Products
+                  </Link>
+                  <Link
+                    to="/products/electronics"
+                    className="block px-4 py-2 text-white hover:bg-blue-600"
+                    onClick={() => setProductsDropdownOpen(false)}
+                  >
+                    Electronics
+                  </Link>
+                  <Link
+                    to="/products/food"
+                    className="block px-4 py-2 text-white hover:bg-blue-600"
+                    onClick={() => setProductsDropdownOpen(false)}
+                  >
+                    Food
+                  </Link>
+                  <Link
+                    to="/products/clothings"
+                    className="block px-4 py-2 text-white hover:bg-blue-600"
+                    onClick={() => setProductsDropdownOpen(false)}
+                  >
+                    Clothing
+                  </Link>
+                  <Link
+                    to="/products/furniture"
+                    className="block px-4 py-2 text-white hover:bg-blue-600"
+                    onClick={() => setProductsDropdownOpen(false)}
+                  >
+                    Furniture
+                  </Link>
+                </div>
+              )}
+            </div>
 
             {/* Conditional "Add Product" Link */}
             {user && (
@@ -66,17 +139,17 @@ const Navbar = () => {
             {user ? (
               <div className="relative">
                 <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  onClick={handleUserDropdownToggle}
                   className="flex items-center space-x-2 p-2 hover:text-yellow-300 transition"
                 >
-                  <User size={24} />
+                  <img src={userAvatar} alt="User Avatar" className="w-8 h-8 rounded-full" />
                 </button>
-                {dropdownOpen && (
+                {userDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-blue-700 rounded-lg shadow-lg py-2">
                     <Link
                       to="/dashboard/accounts"
                       className="block px-4 py-2 text-white hover:bg-blue-600"
-                      onClick={() => setDropdownOpen(false)}
+                      onClick={() => setUserDropdownOpen(false)}
                     >
                       <Home size={16} className="inline mr-2" />
                       Accounts
@@ -84,7 +157,7 @@ const Navbar = () => {
                     <Link
                       to="/dashboard/products"
                       className="block px-4 py-2 text-white hover:bg-blue-600"
-                      onClick={() => setDropdownOpen(false)}
+                      onClick={() => setUserDropdownOpen(false)}
                     >
                       <ShoppingCart size={16} className="inline mr-2" />
                       Dashboard
@@ -92,7 +165,7 @@ const Navbar = () => {
                     <Link
                       to="/settings"
                       className="block px-4 py-2 text-white hover:bg-blue-600"
-                      onClick={() => setDropdownOpen(false)}
+                      onClick={() => setUserDropdownOpen(false)}
                     >
                       <Settings size={16} className="inline mr-2" />
                       Settings
