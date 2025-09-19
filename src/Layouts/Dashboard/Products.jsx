@@ -159,27 +159,126 @@ const ProductsDashboard = () => {
                   <td className="px-4 py-2 border">{product.price} Taka</td>
                   <td className="px-4 py-2 border">{product.quantity}</td>
                   <td className="px-4 py-2 border">
-                    <button
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition mr-2"
-                      onClick={() => {
-                        setSelectedProduct(product);
-                        setShowAddModal(true);
-                      }}
-                    >
-                      <AiOutlinePlus size={20} />
-                    </button>
-                    <button
-                      className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition mr-2"
-                      onClick={() => {
-                        setSelectedProduct(product);
-                        setShowReliesModal(true);
-                      }}
-                    >
-                      <AiOutlineMinus size={20} />
-                    </button>
-                    <button
-                      className="bg-yellow-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition mr-2"
-                      onClick={() => {
+                  {/* Add Stock Button */}
+                  <button
+                    className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition mr-2"
+                    onClick={() => {
+                    setSelectedProduct(product);
+                    setAddAmount(0); // Reset add amount
+                    setShowAddModal(true);
+                    }}
+                  >
+                    <AiOutlinePlus size={20} />
+                  </button>
+                  {/* Add Stock Modal */}
+                  {showAddModal && selectedProduct && selectedProduct._id === product._id && (
+                    <div className="fixed inset-0  bg-opacity-40 flex justify-center items-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                      <h2 className="text-xl font-bold mb-4 text-gray-700">Add Stock</h2>
+                      <div className="mb-4">
+                      <label className="block mb-2 text-gray-600">
+                        Current Quantity: <span className="font-bold">{selectedProduct.quantity}</span>
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={addAmount}
+                        onChange={e => {
+                        const value = Math.max(0, Number(e.target.value));
+                        setAddAmount(value);
+                        }}
+                        className="w-full border rounded px-3 py-2"
+                        placeholder="Enter amount to add"
+                      />
+                      </div>
+                      <div className="flex justify-between">
+                      <button
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition"
+                        onClick={async () => {
+                        if (addAmount <= 0) {
+                          toast.error('Enter a valid amount to add.');
+                          return;
+                        }
+                        await handleAddStock();
+                        setAddAmount(0);
+                        }}
+                      >
+                        Submit
+                      </button>
+                      <button
+                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition"
+                        onClick={() => {
+                        setShowAddModal(false);
+                        setAddAmount(0);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      </div>
+                    </div>
+                    </div>
+                  )}
+                  {/* Subtract Stock Button */}
+                 <button
+                    className="bg-gray-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition mr-2"
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setReliesAmount(0); // Reset relies amount
+                      setShowReliesModal(true);
+                    }}
+                  >
+                    <AiOutlineMinus size={20} />
+                  </button>
+
+                  {showReliesModal && selectedProduct && selectedProduct._id === product._id && (
+                        <div className="fixed inset-0  bg-opacity-40 flex justify-center items-center z-50">
+                        <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                          <h2 className="text-xl font-bold mb-4 text-gray-700">Subtract Stock</h2>
+                          <div className="mb-4">
+                          <label className="block mb-2 text-gray-600">Current Quantity: <span className="font-bold">{selectedProduct.quantity}</span></label>
+                          <input
+                            type="number"
+                            min="1"
+                            max={selectedProduct.quantity}
+                            value={reliesAmount}
+                            onChange={e => {
+                            const value = Math.max(0, Math.min(Number(e.target.value), selectedProduct.quantity));
+                            setReliesAmount(value);
+                            }}
+                            className="w-full border rounded px-3 py-2"
+                            placeholder="Enter amount to subtract"
+                          />
+                          </div>
+                          <div className="flex justif</label>y-between">
+                          <button
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition"
+                            onClick={async () => {
+                            if (reliesAmount <= 0 || reliesAmount > selectedProduct.quantity) {
+                              toast.error('Enter a valid amount to subtract.');
+                              return;
+                            }
+                            await handleReliesStock();
+                            setReliesAmount(0);
+                            }}
+                          >
+                            Submit
+                          </button>
+                          <button
+                            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition"
+                            onClick={() => {
+                            setShowReliesModal(false);
+                            setReliesAmount(0);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                          </div>
+                        </div>
+                        </div>
+                      )}
+                      <button
+                        className="bg-yellow-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition mr-2"
+                        onClick={() => {
                         setSelectedProduct(product);
                         setShowEditModal(true); // Open the Product Detail Modal
                       }}

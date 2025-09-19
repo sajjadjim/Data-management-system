@@ -144,37 +144,39 @@ const Products = () => {
       </div>
 
       {/* Modal for Product Details */}
-      {selectedProduct && (
-        <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="bg-white rounded-lg shadow-lg w-96 p-6">
-            <h2 className="text-2xl font-bold text-blue-600 mb-4">Product Details</h2>
-            <img
-              src={selectedProduct.image}
-              alt={selectedProduct.name}
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-xl font-semibold text-blue-600">{selectedProduct.name}</h3>
-            <p className="text-gray-600">{selectedProduct.code}</p>
-            <p className="text-lg font-semibold text-blue-500 mt-2">{selectedProduct.price} Taka</p>
-            <p className="text-gray-500 mt-2">{selectedProduct.description}</p>
-            <p className="text-sm text-gray-500 mt-2">Category: {selectedProduct.category}</p>
-            <p className="text-sm text-gray-500 mt-2">Quantity Available: {selectedProduct.quantity}</p>
-            <div className="mt-6 flex justify-between">
-              <button
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      )}
+     {selectedProduct && (
+                <motion.div
+                  className="fixed inset-0 flex justify-center items-center z-50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {/* Blurred background */}
+                  <div className="absolute inset-0  bg-opacity-40 backdrop-blur-sm"></div>
+                  <div className="relative bg-white rounded-lg shadow-lg w-96 p-6 z-10">
+                    <h2 className="text-2xl font-bold text-blue-600 mb-4">Product Details</h2>
+                    <img
+                      src={selectedProduct.image}
+                      alt={selectedProduct.name}
+                      className="w-full h-48 object-cover rounded-md mb-4"
+                    />
+                    <h3 className="text-xl font-semibold text-blue-600">{selectedProduct.name}</h3>
+                    <p className="text-gray-600">{selectedProduct.code}</p>
+                    <p className="text-lg font-semibold text-blue-500 mt-2">{selectedProduct.price} Taka</p>
+                    <p className="text-gray-500 mt-2">{selectedProduct.description}</p>
+                    <p className="text-sm text-gray-500 mt-2">Category: {selectedProduct.category}</p>
+                    <p className="text-sm text-gray-500 mt-2">Quantity Available: {selectedProduct.quantity}</p>
+                    <div className="mt-6 flex justify-between">
+                      <button
+                        className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition"
+                        onClick={closeModal}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
     </div>
   );
 };

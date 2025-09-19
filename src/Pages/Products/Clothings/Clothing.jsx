@@ -143,12 +143,14 @@ const Clothing = () => {
       {/* Modal for Product Details */}
       {selectedProduct && (
         <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+          className="fixed inset-0 flex justify-center items-center z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+          {/* Blurred background */}
+          <div className="absolute inset-0  bg-opacity-40 backdrop-blur-sm"></div>
+          <div className="relative bg-white rounded-lg shadow-lg w-96 p-6 z-10">
             <h2 className="text-2xl font-bold text-blue-600 mb-4">Product Details</h2>
             <img
               src={selectedProduct.image}
