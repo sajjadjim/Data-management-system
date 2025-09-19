@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AiOutlineSearch } from "react-icons/ai"; // Search icon
-import Skeleton from "react-loading-skeleton"; // Corrected import for Skeleton
-import { ClipLoader } from "react-spinners"; // Loading spinner import
-import { motion } from "framer-motion"; // React Motion Library
+import Skeleton from "react-loading-skeleton"; // Skeleton loader
+import { motion } from "framer-motion"; // React Motion Library for animations
 import useAxiosInstance from "../../../Hook/useAxiosInstance";
 
 const Furniture = () => {
@@ -20,18 +19,16 @@ const Furniture = () => {
   const productsPerPage = 9;
 
   // Fetch products using React Query, with cache persistence for pagination
-  const { data: AllProducts = [], isLoading, isSuccess, isFetching } = useQuery({
+  const { data: AllProducts = [], isLoading, isSuccess } = useQuery({
     queryKey: ["products", currentPage], // Add currentPage to the queryKey for cache persistence
     queryFn: async () => {
       const res = await useAxios.get("/products");
-    const furnitureProducts = res.data.filter(product => product.category === "Furniture");
-    // console.log(furnitureProducts);
+      const furnitureProducts = res.data.filter(product => product.category === "Furniture");
       return furnitureProducts || [];
     },
     keepPreviousData: true, // Prevent re-fetch when the page changes
     refetchOnWindowFocus: false, // Prevent refetch on tab switch
   });
-
 
   // Filter products by search term (name or code)
   const filteredProducts = AllProducts.filter((product) =>
@@ -62,11 +59,11 @@ const Furniture = () => {
       {/* Page Title and Description */}
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">Furniture Products</h1>
       <p className="text-center text-lg text-gray-500 mb-6">
-        Here you can find a list of all our amazing food products.
+        Explore our wide range of furniture products.
       </p>
 
       {/* Search bar */}
-      <div className="flex justify-center  mb-6">
+      <div className="flex justify-center mb-6">
         <div className="relative w-full max-w-md">
           <input
             type="text"
@@ -81,17 +78,16 @@ const Furniture = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {isFetching ? (
-          // Show loading spinner while fetching data
-          <div className="flex justify-center items-center w-full h-64">
-            <ClipLoader size={50} color={"#007bff"} loading={true} />
-          </div>
-        ) : isLoading || !isSuccess ? (
+        {isLoading ? (
           // Show skeleton loaders when data is loading
           <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex justify-center space-x-4">
             <Skeleton width={250} height={300} />
             <Skeleton width={250} height={300} />
             <Skeleton width={250} height={300} />
+          </div>
+        ) : isSuccess && currentProducts.length === 0 ? (
+          <div className="col-span-1 sm:col-span-2 lg:col-span-3 text-center text-lg text-gray-600">
+            No products found.
           </div>
         ) : (
           // Actual products displayed after data is fetched
@@ -101,7 +97,7 @@ const Furniture = () => {
               className="bg-white rounded-lg shadow-lg p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
+              transition={{ duration: 1 }}
             >
               <img
                 src={product.image}

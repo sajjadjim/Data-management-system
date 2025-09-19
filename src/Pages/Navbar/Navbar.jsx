@@ -31,7 +31,6 @@ const Navbar = () => {
 
   const handleProductsDropdownToggle = () => {
     setProductsDropdownOpen(!productsDropdownOpen);
-    setUserDropdownOpen(false); // Close the User dropdown when Products dropdown is toggled
   };
 
   const handleUserDropdownToggle = () => {
@@ -49,7 +48,13 @@ const Navbar = () => {
   }, [location.pathname]);
 
   // Default User Avatar (in case the user does not have a profile picture)
-  const userAvatar = user?.photoURL || "https://www.w3schools.com/w3images/avatar2.png"; 
+  const userAvatar = user?.photoURL || "https://www.w3schools.com/w3images/avatar2.png";
+
+  // Close Modal when route changes
+  useEffect(() => {
+    setProductsDropdownOpen(false); // Close the Products dropdown when route changes
+    setUserDropdownOpen(false); // Close the User dropdown when route changes
+  }, [location]);
 
   return (
     <nav className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white sticky top-0 z-50 shadow-lg">
@@ -68,20 +73,18 @@ const Navbar = () => {
             </Link>
 
             {/* Products Dropdown with More Routes */}
-            <div
-              className="relative"
-              onMouseEnter={() => setProductsDropdownOpen(true)} // Open on hover
-              onMouseLeave={() => setProductsDropdownOpen(false)} // Close on hover leave
-            >
+            <div className="relative">
               <button
-                onClick={handleProductsDropdownToggle}
+                onClick={handleProductsDropdownToggle} // Always open dropdown on button press
                 className={`flex items-center space-x-2 p-2 hover:text-yellow-300 transition ${isActive("/products")}`}
+                aria-haspopup="true"
+                aria-expanded={productsDropdownOpen}
               >
                 <ShoppingCart size={20} className="inline mr-2" />
                 Products
                 <ChevronDown size={16} className="inline ml-2" />
               </button>
-              {(productsDropdownOpen || location.pathname.includes("/products")) && ( // Open when clicked or hovered
+              {productsDropdownOpen && ( // Show dropdown only when clicked
                 <div className="absolute left-0 mt-2 w-48 bg-blue-700 rounded-lg shadow-lg py-2">
                   <Link
                     to="/products"
@@ -133,6 +136,10 @@ const Navbar = () => {
             <Link to="/contact" className={`hover:text-yellow-300 transition ${isActive("/contact")}`}>
               <User size={20} className="inline mr-2" />
               Contact
+            </Link>
+            <Link to="/about" className={`hover:text-yellow-300 transition ${isActive("/contact")}`}>
+              <User size={20} className="inline mr-2" />
+              About Us
             </Link>
 
             {/* User Dropdown if logged in */}
@@ -241,6 +248,15 @@ const Navbar = () => {
           >
             <User size={20} className="inline mr-2" />
             Contact
+
+          </Link>
+          <Link
+            to="/about"
+            className={`block py-2 hover:text-yellow-300 transition ${isActive("/contact")}`}
+            onClick={() => setIsOpen(false)}
+          >
+            <User size={20} className="inline mr-2" />
+            About Us
           </Link>
 
           {/* Mobile login/signup buttons */}

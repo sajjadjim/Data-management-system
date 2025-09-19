@@ -63,7 +63,7 @@ const Products = () => {
       </p>
 
       {/* Search bar */}
-      <div className="flex justify-center  mb-6">
+      <div className="flex justify-center mb-6">
         <div className="relative w-full max-w-md">
           <input
             type="text"
@@ -76,14 +76,16 @@ const Products = () => {
         </div>
       </div>
 
+      {/* Loading Spinner - Centered */}
+      {isFetching && (
+        <div className="flex justify-center items-center w-full h-64">
+          <ClipLoader size={50} color="#007bff" loading={true} />
+        </div>
+      )}
+
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {isFetching ? (
-          // Show loading spinner while fetching data
-          <div className="flex justify-center items-center w-full h-64">
-            <ClipLoader size={50} color={"#007bff"} loading={true} />
-          </div>
-        ) : isLoading || !isSuccess ? (
+        {isLoading || !isSuccess ? (
           // Show skeleton loaders when data is loading
           <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex justify-center space-x-4">
             <Skeleton width={250} height={300} />
@@ -98,7 +100,7 @@ const Products = () => {
               className="bg-white rounded-lg shadow-lg p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
+              transition={{ duration: 1 }}
             >
               <img
                 src={product.image}

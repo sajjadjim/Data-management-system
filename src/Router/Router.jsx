@@ -19,6 +19,7 @@ import Electronics_Products from "../Pages/Products/Electronics Products/Electro
 import Food from "../Pages/Products/Food/Food";
 import Furniture from "../Pages/Products/Furniture/Furniture";
 import Clothing from "../Pages/Products/Clothings/Clothing";
+import About from "../Pages/About/About";
 export  const router = createBrowserRouter([
   {
     path: "/",
@@ -74,6 +75,10 @@ export  const router = createBrowserRouter([
       {
         path: 'products/clothings',
         element: <Clothing></Clothing>
+      },
+      {
+        path:'/about',
+        element: <About></About>
       }
     ]
   },{
